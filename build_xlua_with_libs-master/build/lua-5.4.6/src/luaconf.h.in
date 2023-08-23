@@ -53,7 +53,9 @@
 
 
 #if defined(LUA_USE_WINDOWS)
+#if !defined(WINAPI_FAMILY_PARTITION)
 #define LUA_DL_DLL	/* enable support for DLL */
+#endif
 #define LUA_USE_C89	/* broadly, Windows is C89 */
 #endif
 
@@ -658,7 +660,9 @@
 ** Change that if you do not want to use C locales. (Code using this
 ** macro must include the header 'locale.h'.)
 */
-#if !defined(lua_getlocaledecpoint)
+#ifdef __ANDROID__
+#define lua_getlocaledecpoint() '.'
+#elif !defined(lua_getlocaledecpoint)
 #define lua_getlocaledecpoint()		(localeconv()->decimal_point[0])
 #endif
 
@@ -756,7 +760,7 @@
 ** of a function in debug information.
 ** CHANGE it if you want a different size.
 */
-#define LUA_IDSIZE	60
+#cmakedefine LUA_IDSIZE	@LUA_IDSIZE@
 
 
 /*

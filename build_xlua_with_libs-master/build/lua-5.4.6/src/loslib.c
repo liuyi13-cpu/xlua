@@ -139,18 +139,18 @@
 #endif
 
 
-static int os_execute (lua_State *L) {
-  const char *cmd = luaL_optstring(L, 1, NULL);
-  int stat;
-  errno = 0;
-  stat = l_system(cmd);
-  if (cmd != NULL)
-    return luaL_execresult(L, stat);
-  else {
-    lua_pushboolean(L, stat);  /* true if there is a shell */
-    return 1;
-  }
-}
+//static int os_execute (lua_State *L) {
+//  const char *cmd = luaL_optstring(L, 1, NULL);
+//  int stat;
+//  errno = 0;
+//  stat = l_system(cmd);
+//  if (cmd != NULL)
+//    return luaL_execresult(L, stat);
+//  else {
+//    lua_pushboolean(L, stat);  /* true if there is a shell */
+//    return 1;
+//  }
+//}
 
 
 static int os_remove (lua_State *L) {
@@ -178,8 +178,12 @@ static int os_tmpname (lua_State *L) {
 
 
 static int os_getenv (lua_State *L) {
+#if defined(WINAPI_FAMILY_PARTITION)
+  return luaL_error(L, "unsupport api in uwp platform");
+#else
   lua_pushstring(L, getenv(luaL_checkstring(L, 1)));  /* if NULL push nil */
   return 1;
+#endif
 }
 
 
@@ -406,7 +410,7 @@ static const luaL_Reg syslib[] = {
   {"clock",     os_clock},
   {"date",      os_date},
   {"difftime",  os_difftime},
-  {"execute",   os_execute},
+  //{"execute",   os_execute},
   {"exit",      os_exit},
   {"getenv",    os_getenv},
   {"remove",    os_remove},
