@@ -542,7 +542,7 @@ LUAMOD_API int luaopen_base (lua_State *L) {
   lua_pushvalue(L, -1);
   lua_setfield(L, -2, LUA_GNAME);
   /* set global _VERSION */
-  lua_pushliteral(L, LUA_VERSION);
+  lua_pushliteral(L, LUA_RELEASE); // 获取完整版本号 LUA_VERSION
   lua_setfield(L, -2, "_VERSION");
   return 1;
 }
